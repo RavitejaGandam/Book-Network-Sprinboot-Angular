@@ -1,5 +1,6 @@
 package com.ravi.book_network.service;
 
+import com.ravi.book_network.email.EmailService;
 import com.ravi.book_network.entity.RegistrationRequest;
 import com.ravi.book_network.entity.Token;
 import com.ravi.book_network.entity.User;
@@ -23,6 +24,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
+    private final EmailService emailService;
 
     public void register(RegistrationRequest request) {
         var userRole = roleRepository.findByName("USER")
