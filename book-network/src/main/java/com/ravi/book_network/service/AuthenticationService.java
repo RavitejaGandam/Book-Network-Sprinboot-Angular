@@ -1,13 +1,16 @@
 package com.ravi.book_network.service;
 
 import com.ravi.book_network.email.EmailService;
+import com.ravi.book_network.email.EmailTemplateName;
 import com.ravi.book_network.entity.RegistrationRequest;
 import com.ravi.book_network.entity.Token;
 import com.ravi.book_network.entity.User;
 import com.ravi.book_network.repositories.RoleRepository;
 import com.ravi.book_network.repositories.TokenRepository;
 import com.ravi.book_network.repositories.UserRepository;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +28,11 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final EmailService emailService;
+    @Value("${application.mailing.frontend.activation-url}")
+    private String activationUrl;
 
-    public void register(RegistrationRequest request) {
+
+    public void register(RegistrationRequest request) throws MessagingException {
         var userRole = roleRepository.findByName("USER")
                 .orElseThrow();
         User user = User.builder()
@@ -42,8 +48,17 @@ public class AuthenticationService {
         sendValidationEmail(user);
     }
 
-    private void sendValidationEmail(User user) {
+    private void sendValidationEmail(User user) throws MessagingException {
         var newToken = generateAndSaveActivationToken(user);
+        
+        emailService.sendEmail(
+                user.getEmail(),
+                user.fullName(),
+                EmailTemplateName.ACTIVATE_ACCOUNT,
+                activationUrl,
+                newToken,
+                "Activate and enjoy the benefits"
+        );
 
     }
 
