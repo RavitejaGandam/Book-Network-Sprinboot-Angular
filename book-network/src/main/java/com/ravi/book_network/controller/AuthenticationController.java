@@ -24,4 +24,9 @@ public class AuthenticationController {
         service.register(request);
         return ResponseEntity.accepted().build();
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<String> checking(){
+        return ResponseEntity.ok("Controller is ok...!");
+    }
 }

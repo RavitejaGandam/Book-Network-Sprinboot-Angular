@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +22,8 @@ import static org.springframework.mail.javamail.MimeMessageHelper.MULTIPART_MODE
 @Service
 @RequiredArgsConstructor
 public class EmailService {
+    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
+
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
 
@@ -62,5 +67,12 @@ public class EmailService {
 
         helper.setText(template,true);
         mailSender.send(mimeMessage);
+//        try {
+//            mailSender.send(mimeMessage);
+//            logger.info("Email sent successfully to {}", to);
+//        } catch (MessagingException e) {
+//            logger.error("Failed to send email to {}", to, e);
+//            throw e; // Rethrow the exception if needed
+//        }
     }
 }
