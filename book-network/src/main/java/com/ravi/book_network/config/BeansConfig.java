@@ -25,6 +25,11 @@ public class BeansConfig {
     }
 
     @Bean
+    public ApplicationAuditAware auditAware(){
+        return auditAware();
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
