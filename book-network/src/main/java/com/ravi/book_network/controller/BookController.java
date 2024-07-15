@@ -1,16 +1,16 @@
 package com.ravi.book_network.controller;
 
 import com.ravi.book_network.book.BookRequest;
+import com.ravi.book_network.book.BookResponse;
+import com.ravi.book_network.common.PageResponse;
 import com.ravi.book_network.service.BookService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,5 +24,18 @@ public class BookController {
     public ResponseEntity<Integer> saveBook(@Valid @RequestBody BookRequest request,
                                             Authentication connectedUser){
         return ResponseEntity.ok(service.save(request,connectedUser));
+    }
+
+    @GetMapping("/{book-id}")
+    public ResponseEntity<BookResponse> findBookById(@PathVariable("book-id") Integer bookId){
+        return ResponseEntity.ok(service.findBookById(bookId));
+    }
+
+    @GetMapping("/getAllBooks")
+    public ResponseEntity<PageResponse<BookResponse>> findAllBooks(
+            @RequestParam(name = "page" , defaultValue = "0",required = false ) int page,
+            @RequestParam(name = "size" , defaultValue = "10",required = false ) int size,
+           Authentication connectedUser){
+        return ResponseEntity.ok(service.findAllBooks(page,size,connectedUser));
     }
 }
