@@ -80,4 +80,11 @@ public class BookController {
     ) throws OperationNotSupportedException{
         return ResponseEntity.ok(service.updateArchivedStatus(bookId,connectedUser));
     }
+
+    @PostMapping("/borrowBook/{book-id}")
+    public ResponseEntity<Integer> borrowBook(
+            @PathVariable("book-id") Integer bookId, Authentication connectedUser
+    ) throws OperationNotSupportedException {
+        return ResponseEntity.ok(service.borrowBook(bookId,connectedUser));
+    }
 }
