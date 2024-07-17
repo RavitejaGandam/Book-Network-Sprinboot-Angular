@@ -136,4 +136,17 @@ public class BookService {
         return bookId;
 
     }
+
+    public Integer updateArchivedStatus(Integer bookId, Authentication connectedUser) throws OperationNotSupportedException {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(()->new EntityNotFoundException("Book associated with id : " + bookId+" is not found"));
+        User user = ((User) connectedUser.getPrincipal());
+        if(!Objects.equals(book.getOwner().getId(),user.getId())){
+            throw new OperationNotSupportedException("You cannot do this operation as you are not the owner of the book ");
+
+        }
+        book.setArchived(!book.isArchived());
+        bookRepository.save(book);
+        return bookId;
+    }
 }
