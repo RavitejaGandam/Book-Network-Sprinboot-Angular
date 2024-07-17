@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.naming.OperationNotSupportedException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ravi.book_network.book.BookSpecification.withOwnerId;
@@ -174,5 +175,39 @@ public class BookService {
                 .build();
         return transactionHistoryRepository.save(bookTransactionHistory).getId();
 
+    }
+
+    public Integer returnBorrowedBook(Integer bookId, Authentication connectedUser) throws OperationNotSupportedException {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(()->new EntityNotFoundException("Book associated with id : " + bookId+" is not found"));
+        if (book.isArchived() || !book.isShareable()){
+            throw new OperationNotSupportedException("You cannot do this operation as this book  is not able to share or archived");
+        }
+        User user = ((User) connectedUser.getPrincipal());
+        if(Objects.equals(book.getOwner().getId(),user.getId())){
+            throw new OperationNotSupportedException("You cannot do this operation as you are the owner of the book ");
+
+        }
+        BookTransactionHistory bookTransactionHistory = transactionHistoryRepository.findByBookIdAndUserId(bookId,user.getId())
+                .orElseThrow(()-> new OperationNotSupportedException("you cannot do this right now. Please try again.."));
+        bookTransactionHistory.setReturned(true);
+        return transactionHistoryRepository.save(bookTransactionHistory).getId();
+    }
+
+    public Integer approveReturnBorrowedBook(Integer bookId, Authentication connectedUser) throws OperationNotSupportedException {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(()->new EntityNotFoundException("Book associated with id : " + bookId+" is not found"));
+        if (book.isArchived() || !book.isShareable()){
+            throw new OperationNotSupportedException("You cannot do this operation as this book  is not able to share or archived");
+        }
+        User user = ((User) connectedUser.getPrincipal());
+        if(Objects.equals(book.getOwner().getId(),user.getId())){
+            throw new OperationNotSupportedException("You cannot do this operation as you are the owner of the book ");
+
+        }
+        BookTransactionHistory bookTransactionHistory = transactionHistoryRepository.findByBookIdAndOwnerId(bookId,user.getId())
+                .orElseThrow(()-> new OperationNotSupportedException("you cannot do this right now. As it is not returned. please try again later.."));
+        bookTransactionHistory.setReturnApproved(true);
+        return transactionHistoryRepository.save(bookTransactionHistory).getId();
     }
 }

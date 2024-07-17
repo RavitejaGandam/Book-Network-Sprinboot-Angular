@@ -87,4 +87,17 @@ public class BookController {
     ) throws OperationNotSupportedException {
         return ResponseEntity.ok(service.borrowBook(bookId,connectedUser));
     }
+
+    @PatchMapping("/borrow/return/{book-id}")
+    public ResponseEntity<Integer> returnBorrowedBook(
+            @PathVariable("book-id") Integer bookId, Authentication connectedUser
+    ) throws OperationNotSupportedException{
+        return ResponseEntity.ok(service.returnBorrowedBook(bookId,connectedUser));
+    }
+    @PatchMapping("/borrow/return/approve{book-id}")
+    public ResponseEntity<Integer> approveReturnBorrowedBook(
+            @PathVariable("book-id") Integer bookId, Authentication connectedUser
+    ) throws OperationNotSupportedException{
+        return ResponseEntity.ok(service.approveReturnBorrowedBook(bookId,connectedUser));
+    }
 }
