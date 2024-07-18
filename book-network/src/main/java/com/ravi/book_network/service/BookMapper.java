@@ -4,6 +4,7 @@ import com.ravi.book_network.book.Book;
 import com.ravi.book_network.book.BookRequest;
 import com.ravi.book_network.book.BookResponse;
 import com.ravi.book_network.book.BorrowedBookResponse;
+import com.ravi.book_network.file.FileUtils;
 import com.ravi.book_network.history.BookTransactionHistory;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public class BookMapper {
                         .archived(book.isArchived())
                         .shareable(book.isShareable())
                         .owner(book.getOwner().fullName())
-                       //.cover()
+                       .cover(FileUtils.readFromLocation(book.getBookCover()))
                         .build();
     }
 
