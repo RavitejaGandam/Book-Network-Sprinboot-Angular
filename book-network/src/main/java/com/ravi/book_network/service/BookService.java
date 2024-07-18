@@ -6,6 +6,7 @@ import com.ravi.book_network.book.BookResponse;
 import com.ravi.book_network.book.BorrowedBookResponse;
 import com.ravi.book_network.common.PageResponse;
 import com.ravi.book_network.entity.User;
+import com.ravi.book_network.file.FileStorageService;
 import com.ravi.book_network.history.BookTransactionHistory;
 import com.ravi.book_network.repositories.BookRepository;
 import com.ravi.book_network.repositories.BookTransactionHistoryRepository;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.List;
@@ -32,6 +34,7 @@ public class BookService {
     private final BookMapper bookMapper;
     private final BookRepository bookRepository;
     private final BookTransactionHistoryRepository transactionHistoryRepository;
+    private final FileStorageService fileStorageService;
     public Integer save(BookRequest request, Authentication connectedUser) {
         User user = ((User) connectedUser.getPrincipal());
         Book book = bookMapper.toBook(request);
@@ -209,5 +212,14 @@ public class BookService {
                 .orElseThrow(()-> new OperationNotSupportedException("you cannot do this right now. As it is not returned. please try again later.."));
         bookTransactionHistory.setReturnApproved(true);
         return transactionHistoryRepository.save(bookTransactionHistory).getId();
+    }
+
+    public void uploadBookCoverPicture(Integer bookId, Authentication connectedUser, MultipartFile file) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(()->new EntityNotFoundException("Book associated with id : " + bookId+" is not found"));
+        User user = ((User) connectedUser.getPrincipal());
+        var bookCover = fileStorageService.savefile(user.getId(),bookId,file);
+        book.setBookCover(bookCover);
+        bookRepository.save(book);
     }
 }
