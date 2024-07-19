@@ -28,7 +28,7 @@ public class FeedbackService {
     private final BookRepository bookRepository;
     private final FeedbackMapper feedbackMapper;
     private final FeedbackRepository feedbackRepository;
-    private final FeedbackResponse feedbackResponse;
+   // private final FeedbackResponse feedbackResponse;
     public Integer save(FeedbackRequest request, Authentication connectedUser) throws OperationNotSupportedException {
         Book book = bookRepository.findById(request.bookId())
                 .orElseThrow(()->new EntityNotFoundException("Book associated with id : " + request.bookId()+" is not found"));

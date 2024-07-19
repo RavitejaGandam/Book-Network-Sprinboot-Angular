@@ -25,8 +25,8 @@ public class BeansConfig {
     }
 
     @Bean
-    public ApplicationAuditAware auditAware(){
-        return auditAware();
+    public ApplicationAuditAware auditAware() throws Exception{
+        return new ApplicationAuditAware();
     }
 
     @Bean

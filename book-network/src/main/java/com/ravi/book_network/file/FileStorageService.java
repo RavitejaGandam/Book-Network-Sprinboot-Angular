@@ -39,23 +39,24 @@ public class FileStorageService {
 
         final String finalUploadPath = fileUploadPath + separator + fileUploadSubPath;
         File targetFolder = new File(fileUploadSubPath);
-        if (!targetFolder.exists()){
+        if (!targetFolder.exists()) {
             boolean folderCreated = targetFolder.mkdirs();
-            if(!folderCreated){
+            if (!folderCreated) {
                 log.warn("Failed to create a folder ");
             }
         }
         final String fileExtension = getFileExtension(sourceFile.getOriginalFilename());
-        String targetFilePath = finalUploadPath + separator +fileExtension;
+        String targetFilePath = finalUploadPath + separator + fileExtension;
         Path targetPath = Paths.get(targetFilePath);
         try {
-            Files.write(targetPath,sourceFile.getBytes());
+            Files.write(targetPath, sourceFile.getBytes());
             log.info("file saved to " + targetFilePath);
             return targetFilePath;
+        } catch (IOException e) {
+            log.error("Error in uploading.. and file not saved", e);
         }
-        catch (IOException e){
-            log.error("Error in uploading.. and file not saved",e);
-        }
+       return null;
+
     }
 
     private String getFileExtension(String fileName) {
