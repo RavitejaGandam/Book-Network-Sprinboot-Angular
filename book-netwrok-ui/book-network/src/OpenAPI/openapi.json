@@ -31,12 +31,12 @@
     }
   ],
   "paths": {
-    "/feedbacks": {
+    "/feedbacks/giveFeedback": {
       "post": {
         "tags": [
           "Feedback"
         ],
-        "operationId": "saveFeedback",
+        "operationId": "saveFeedBack",
         "requestBody": {
           "content": {
             "application/json": {
@@ -62,47 +62,7 @@
         }
       }
     },
-    "/books": {
-      "get": {
-        "tags": [
-          "Book"
-        ],
-        "operationId": "findAllBooks",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PageResponseBookResponse"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/books/saveBook": {
       "post": {
         "tags": [
           "Book"
@@ -182,7 +142,7 @@
         }
       }
     },
-    "/books/borrow/{book-id}": {
+    "/books/borrowBook/{book-id}": {
       "post": {
         "tags": [
           "Book"
@@ -311,7 +271,7 @@
         "tags": [
           "Book"
         ],
-        "operationId": "returnBorrowBook",
+        "operationId": "returnBorrowedBook",
         "parameters": [
           {
             "name": "book-id",
@@ -338,12 +298,12 @@
         }
       }
     },
-    "/books/borrow/return/approve/{book-id}": {
+    "/books/borrow/return/approve{book-id}": {
       "patch": {
         "tags": [
           "Book"
         ],
-        "operationId": "approveReturnBorrowBook",
+        "operationId": "approveReturnBorrowedBook",
         "parameters": [
           {
             "name": "book-id",
@@ -370,7 +330,7 @@
         }
       }
     },
-    "/books/archived/{book-id}": {
+    "/books/archivedStatus/{book-id}": {
       "patch": {
         "tags": [
           "Book"
@@ -402,12 +362,12 @@
         }
       }
     },
-    "/feedbacks/book/{book-id}": {
+    "/feedbacks/feedbackBook/{book-id}": {
       "get": {
         "tags": [
           "Feedback"
         ],
-        "operationId": "findAllFeedbacksByBook",
+        "operationId": "findAllFeedbackByBook",
         "parameters": [
           {
             "name": "book-id",
@@ -484,7 +444,7 @@
         }
       }
     },
-    "/books/returned": {
+    "/books/returnedBooks": {
       "get": {
         "tags": [
           "Book"
@@ -526,7 +486,7 @@
         }
       }
     },
-    "/books/owner": {
+    "/books/ownerBooks": {
       "get": {
         "tags": [
           "Book"
@@ -568,7 +528,49 @@
         }
       }
     },
-    "/books/borrowed": {
+    "/books/getAllBooks": {
+      "get": {
+        "tags": [
+          "Book"
+        ],
+        "operationId": "findAllBooks",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseBookResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/books/borrowedBooks": {
       "get": {
         "tags": [
           "Book"
@@ -603,6 +605,26 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PageResponseBorrowedBookResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/test": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "checking",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -691,16 +713,16 @@
       "RegistrationRequest": {
         "required": [
           "email",
-          "firstname",
-          "lastname",
+          "firstName",
+          "lastName",
           "password"
         ],
         "type": "object",
         "properties": {
-          "firstname": {
+          "firstName": {
             "type": "string"
           },
-          "lastname": {
+          "lastName": {
             "type": "string"
           },
           "email": {
@@ -749,7 +771,7 @@
             "type": "string"
           },
           "ownFeedback": {
-            "type": "boolean"
+            "type": "string"
           }
         }
       },
@@ -827,39 +849,6 @@
           }
         }
       },
-      "PageResponseBookResponse": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BookResponse"
-            }
-          },
-          "number": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "size": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalElements": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "first": {
-            "type": "boolean"
-          },
-          "last": {
-            "type": "boolean"
-          }
-        }
-      },
       "BorrowedBookResponse": {
         "type": "object",
         "properties": {
@@ -895,6 +884,39 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/BorrowedBookResponse"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageResponseBookResponse": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BookResponse"
             }
           },
           "number": {
