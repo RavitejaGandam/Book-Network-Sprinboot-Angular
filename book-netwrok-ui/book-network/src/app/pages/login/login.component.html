@@ -4,4 +4,12 @@
     <div class="alert alert-danger" role="alert" *ngIf="errorMsg.length">
         <p *ngFor="let msg of errorMsg">{{msg}}</p>
     </div>
+    <div class="mb-3">
+        <label for="login" class="form-label">Email</label>
+        <input [(ngModel)]="authRequest.email" class="form-control" type="email"placeholder="name@mail.com" id="login">
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input  [(ngModel)]="authRequest.password" class="form-control" type="password"placeholder="your password" id="password">
+    </div>
 </div>
