@@ -10,4 +10,10 @@ export class LoginComponent {
   authRequest : AuthenticationRequest={email:' ',password:''};
   errorMsg : Array<string>=[];
 
+  login(){
+
+  }
+  register(){
+    
+  }
 }

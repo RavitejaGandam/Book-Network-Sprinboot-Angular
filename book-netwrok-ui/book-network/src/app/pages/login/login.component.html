@@ -12,4 +12,15 @@
         <label for="password" class="form-label">Password</label>
         <input  [(ngModel)]="authRequest.password" class="form-control" type="password"placeholder="your password" id="password">
     </div>
+  <div class="d-flex justify-content-between mb-3">
+    <button (click)="login()" type="button" class="btn btn-primary">
+      <em class="fas fa-sign-in-alt">&nbsp;Sign in</em>
+    </button>
+    <div>
+      Don't have an account?&nbsp;
+      <button (click)="register()" type="button" class="btn btn-link">
+        Register
+      </button>
+    </div>
+  </div>
 </div>
