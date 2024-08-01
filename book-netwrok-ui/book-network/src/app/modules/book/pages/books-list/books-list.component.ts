@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PageResponseBookResponse } from 'src/app/services/models';
+import { BookResponse, PageResponseBookResponse } from 'src/app/services/models';
 import { BookService } from 'src/app/services/services';
 
 @Component({
@@ -9,9 +9,16 @@ import { BookService } from 'src/app/services/services';
   styleUrls: ['./books-list.component.scss']
 })
 export class BooksListComponent implements OnInit {
+displayBookDetails($event: BookResponse) {
+throw new Error('Method not implemented.');
+}
+borrowBook($event: BookResponse) {
+throw new Error('Method not implemented.');
+}
   bookResponse:PageResponseBookResponse={}
   page: number = 0;
   size: number = 5;
+  pages = [];
   constructor(
     private booksService: BookService,
     private router: Router
@@ -37,6 +44,32 @@ export class BooksListComponent implements OnInit {
       }
     )
     throw new Error('Method not implemented.');
+  }
+
+  goToFirstPage(){
+    this.page = 0;
+    this.findAllBooks();
+  }
+
+  goToPreviousPage(){
+    this.page--;
+    this.findAllBooks();
+  }
+  goToPage(page:number){
+    this.page = page;
+    this.findAllBooks();
+  }
+
+  goToNextPage(){
+    this.page++;
+    this.findAllBooks();
+  }
+  goToLastPage(){
+    this.page = this.bookResponse.totalPages as number -1;
+    this.findAllBooks();
+  }
+  get isLastPage(){
+    return this.page = this.bookResponse.totalPages as number -1;
   }
 
 
