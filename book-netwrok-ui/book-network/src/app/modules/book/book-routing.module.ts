@@ -22,6 +22,10 @@ const routes: Routes = [
         path: 'manage',
         component: ManageBookComponent,
       },
+      {
+        path: 'manage/:bookId',
+        component: ManageBookComponent,
+      },
     ],
   },
 ];

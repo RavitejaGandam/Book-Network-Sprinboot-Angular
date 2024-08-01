@@ -9,7 +9,7 @@ import { BookCardComponent } from './components/book-card/book-card.component';
 import { RatingComponent } from './components/rating/rating.component';
 import { MyBooksComponent } from './pages/my-books/my-books.component';
 import { ManageBookComponent } from './pages/manage-book/manage-book.component';
-
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,11 +19,8 @@ import { ManageBookComponent } from './pages/manage-book/manage-book.component';
     BookCardComponent,
     RatingComponent,
     MyBooksComponent,
-    ManageBookComponent
+    ManageBookComponent,
   ],
-  imports: [
-    CommonModule,
-    BookRoutingModule
-  ]
+  imports: [CommonModule, BookRoutingModule, FormsModule],
 })
-export class BookModule { }
+export class BookModule {}
