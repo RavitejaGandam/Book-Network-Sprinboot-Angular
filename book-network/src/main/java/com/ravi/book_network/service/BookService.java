@@ -204,7 +204,7 @@ public class BookService {
             throw new OperationNotSupportedException("You cannot do this operation as this book  is not able to share or archived");
         }
         User user = ((User) connectedUser.getPrincipal());
-        if(Objects.equals(book.getOwner().getId(),user.getId())){
+        if(!Objects.equals(book.getOwner().getId(),user.getId())){
             throw new OperationNotSupportedException("You cannot do this operation as you are the owner of the book ");
 
         }
