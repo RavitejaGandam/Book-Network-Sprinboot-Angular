@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 //@ComponentScan(basePackages = "com.ravi.book_network")
 public class BookNetworkApplication {
 
-	//start seeing from 10:15:00 mins
+	//start seeing from you have completed man..!
 	public static void main(String[] args) {
 		SpringApplication.run(BookNetworkApplication.class, args);
 	}
