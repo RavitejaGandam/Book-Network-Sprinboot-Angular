@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BookRequest } from 'src/app/services/models';
 import { BookService } from 'src/app/services/services';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-book',
@@ -18,8 +18,31 @@ export class ManageBookComponent implements OnInit {
     synopsis: '',
     title: '',
   };
-  constructor(private bookService: BookService, private router: Router) {}
+  constructor(
+    private bookService: BookService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
   ngOnInit(): void {
+    const bookId = this.activatedRoute.snapshot.params['bookId'];
+    if (bookId) {
+      this.bookService.findBookById(bookId).subscribe({
+        next: (book) => {
+          this.bookRequest = {
+            id: book.id,
+            title: book.title as string,
+            authorName: book.authorName as string,
+            isbn: book.isbn as string,
+            synopsis: book.synopsis as string,
+            shareable: book.shareable,
+          };
+          if (book.cover) {
+            this.selectedPicture = 'data:image/jpg;base64,' + book.cover;
+          }
+        },
+      });
+    }
+
     throw new Error('Method not implemented.');
   }
   onFileSelected(event: any) {
